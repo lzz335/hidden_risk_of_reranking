@@ -1,0 +1,1 @@
+This folder showcases more examples of changes in the reranker's attention mechanism (as promised in Section 3.2 of the main paper).

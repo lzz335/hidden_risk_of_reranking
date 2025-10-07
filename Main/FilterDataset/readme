@@ -1,0 +1,3 @@
+For NQ, we first used the code from the original paper to simplify the dataset.
+
+The PQA, MultihopQA and Musique dataset does not require complex data preprocessing.
