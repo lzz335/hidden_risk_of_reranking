@@ -21,7 +21,8 @@ reranker_model3 = RerankerByRerankerModel(model_list[2])
 reranker_model3.set_tokenizer(AutoTokenizer.from_pretrained(model_name_list[2]))
 config2 = TrainConfig
 config2.pretrained_model = "microsoft/deberta-base-mnli"
-our_reranker = OurReranker(model_save_path=r"../model/full_nli.pt", device=device, inference_config=config2, weight=[1, -0.5, -0.01])
+# 1， -0.5 is the setting in our paper
+our_reranker = OurReranker(model_save_path=r"../model/full_nli.pt", device=device, inference_config=config2, weight=[1, -0.5])
 
 
 def get_rerank_data(recall_data:List[dict],file_path,keys:None|List):

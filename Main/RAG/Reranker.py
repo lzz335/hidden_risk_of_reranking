@@ -160,6 +160,7 @@ class OurReranker:
             
         # Set weights for combining scores (positive for first head, negative for second)
         if weight is None:
+            # 1， -0.5 is the setting in our paper
             self.weight = [1, -0.5]  # Default weights favor first head, penalize second
         else:
             self.weight = weight

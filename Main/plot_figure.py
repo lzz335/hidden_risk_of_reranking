@@ -1,13 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 hd_result = np.loadtxt("plot_data/hd_result.csv", delimiter=",")
 md_result = np.loadtxt("plot_data/md_result.csv", delimiter=",")
 
-hd_result = hd_result[:,0:3]
-md_result = md_result[:,0:3]
-
-types = ["No Reranker", "BGE Reranker", "JINA Reranker", "GTE Reranker", "ListCR"]
+types = ["No Reranker (MIPS)", "BGE Reranker", "JINA Reranker", "GTE Reranker", "ListCR"]
 length = 2417
 gd_result = 2417 - hd_result - md_result
 fig, axs = plt.subplots(3, 1, figsize=(10, 10))
@@ -16,38 +14,45 @@ plt.rcParams['font.family'] = 'serif'
 plt.rcParams['font.serif'] = ['Times New Roman']
 
 for ty, dum in zip(types, hd_result):
-    axs[2].plot(range(1, 4), np.array(dum) * 100 / length, marker='o', label=ty)
+    axs[2].plot(range(1, 6), np.array(dum) * 100 / length, marker='o', label=ty)
 x_y_font = 18
 title_font = 20
 para_size = 20
+# axs[0].legend(title='Reranker')
 axs[2].set_xlabel("Rank of the Document", fontsize=x_y_font)
 axs[2].set_ylabel("Percentage (%)", fontsize=x_y_font)
-axs[2].set_title("(c) Percentage of HD at Top-3 Rank", fontsize=title_font)
+axs[2].set_title("(c) Percentage of HD at Top-5 Rank", fontsize=title_font)
 axs[2].grid(True, linestyle='--', alpha=0.7)
 axs[2].tick_params(axis='both', which='major', labelsize=para_size)
-axs[2].set_xticks(np.arange(1, 4, 1))
-axs[2].set_yticks(np.arange(7, 30, 5))
-axs[2].set_xlim(0.9, 3.1)
+axs[2].set_xticks(np.arange(1, 6, 1))
+axs[2].set_yticks(np.arange(7, 35, 5))
+axs[2].set_xlim(0.9, 5.1)
+
 for ty, dum in zip(types, md_result):
-    axs[1].plot(range(1, 4), np.array(dum) * 100 / length, marker='o', label=ty)
+    axs[1].plot(range(1, 6), np.array(dum) * 100 / length, marker='o', label=ty)
+
 axs[1].set_xlabel("Rank of the Document", fontsize=x_y_font)
 axs[1].set_ylabel("Percentage (%)", fontsize=x_y_font)
-axs[1].set_title("(b) Percentage of MD at Top-3 Rank", fontsize=title_font)
+axs[1].set_title("(b) Percentage of MD at Top-5 Rank", fontsize=title_font)
 axs[1].grid(True, linestyle='--', alpha=0.7)
 axs[1].tick_params(axis='both', which='major', labelsize=para_size)
-axs[1].set_xticks(np.arange(1, 4, 1))
-axs[1].set_xlim(0.9, 3.1)
-
+axs[1].set_xticks(np.arange(1, 6, 1))
+axs[1].set_xlim(0.9, 5.1)
+axs[1].set_ylim(0, 70.1)
+axs[1].set_yticks(np.arange(0, 71, 10))
 for ty, dum in zip(types, gd_result):
-    axs[0].plot(range(1, 4), np.array(dum) * 100 / length, marker='o', label=ty)
+    axs[0].plot(range(1, 6), np.array(dum) * 100 / length, marker='o', label=ty)
+
 axs[2].legend(fontsize = 14, loc='upper right')
 axs[0].set_xlabel("Rank of the Document", fontsize=x_y_font)
 axs[0].set_ylabel("Percentage (%)", fontsize=x_y_font)
-axs[0].set_title("(a) Percentage of GD at Top-3 Rank", fontsize=title_font)
+axs[0].set_title("(a) Percentage of GD at Top-5 Rank", fontsize=title_font)
 axs[0].grid(True, linestyle='--', alpha=0.7)
 axs[0].tick_params(axis='both', which='major', labelsize=para_size)
-axs[0].set_xticks(np.arange(1, 4, 1))
-axs[0].set_xlim(0.9, 3.1)
+axs[0].set_xticks(np.arange(1, 6, 1))
+axs[0].set_xlim(0.9, 5.1)
+axs[0].set_ylim(20, 90.1)
+axs[0].set_yticks(np.arange(20, 91, 10))
 plt.tight_layout()
 plt.savefig("figure/empirical study.png")
 plt.show()
@@ -75,7 +80,7 @@ def plot_bar_chart(values, colors, filename, tick_font_size=12, label_font_size=
     plt.savefig(f'figure/{filename}.png', bbox_inches='tight')
     plt.show()
     plt.close(fig)
-
+# This section does not depict the experimental results, but rather the schematic diagram in the main image.
 plot_bar_chart([79,12,9], ['#E2F0D9', '#FBE5D6', '#DEEBF7'], 'mips_distribution', tick_font_size=20, label_font_size=20)
 plot_bar_chart([62,9,29], ['#E2F0D9', '#FBE5D6', '#DEEBF7'], 'reranker_distribution', tick_font_size=20, label_font_size=20)
 
@@ -99,7 +104,7 @@ ax.set_xticks(index)
 ax.set_xticklabels(dataset_names)
 ax.legend(fontsize = para_size - 2)
 ax.tick_params(axis='both', which='major', labelsize=para_size)
-ax.set_ylim([0,4.5])
+ax.set_ylim(0,4.5)
 def add_labels(bars):
     for bar in bars:
         height = bar.get_height()

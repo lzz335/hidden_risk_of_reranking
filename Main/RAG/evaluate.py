@@ -1,7 +1,7 @@
 # Import utilities for reading JSON and JSONL files
 from util.json_method import read_json_file, read_jsonl
 
-def get_file_path(model_name, question_type):
+def get_file_path(model_name, dataset_name, question_type):
     """Generate standardized file path for model results
     
     Args:
@@ -11,7 +11,7 @@ def get_file_path(model_name, question_type):
     Returns:
         Formatted file path for the model results
     """
-    return "result/PQA/recall_index_{}_{}_{}.json".format(model_name, "PQA", question_type)
+    return "result/PQA/recall_index_{}_{}_{}.json".format(model_name, dataset_name, question_type)
 
 
 def calculate_metrics(gold_answers, predictions):
@@ -38,12 +38,9 @@ def calculate_metrics(gold_answers, predictions):
     if len(gold) != len(pred):
         raise ValueError("Gold answers and predictions must have the same length")
 
-    # Calculate special accuracy (treating 'maybe' as acceptable for 'yes')
     correct = 0
     for g, p in zip(gold, pred):
         if g == p:
-            correct += 1
-        elif g == "yes" and p == "maybe":  # Special case: 'maybe' counts as correct for 'yes'
             correct += 1
     accuracy_special = correct / len(gold)
 
@@ -77,7 +74,7 @@ def calculate_metrics(gold_answers, predictions):
 
     return accuracy_special, macro_f1, micro_f1
 
-def calculate_pipline(model_name, question_type):
+def calculate_pipline(model_name, dataset_name, question_type):
     """Evaluate pipeline performance for a specific model and question type
     
     Args:
@@ -85,7 +82,7 @@ def calculate_pipline(model_name, question_type):
         question_type: Type of question processing method
     """
     # Get file path for model results
-    path = get_file_path(model_name, question_type)
+    path = get_file_path(model_name, dataset_name, question_type)
     # Load model predictions
     recall_data = read_json_file(path)
     # Extract answer predictions
@@ -117,4 +114,4 @@ question_types = [
 # Run evaluation for all model and question type combinations
 for model_name in model_list:
     for question_type in question_types:
-        calculate_pipline(model_name, question_type)
+        calculate_pipline(model_name, "PQA", question_type)

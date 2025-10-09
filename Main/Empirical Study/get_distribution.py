@@ -1,7 +1,7 @@
 import numpy as np
 
 from util.json_method import read_json_file,read_jsonl
-corpus_data = read_json_file("Train Bert/train_corpus2.json")
+corpus_data = read_json_file("Train Bert/test_corpus2.json")
 
 data_dict = {}
 for item in corpus_data:
